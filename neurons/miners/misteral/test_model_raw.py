@@ -27,7 +27,7 @@ class StopOnTokens(StoppingCriteria):
                 return True
         return False
 
-model = AutoModelForCausalLM.from_pretrained("mattshumer/mistral-8x7b-chat", low_cpu_mem_usage=True, device_map="auto", trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained("mattshumer/mistral-8x7b-chat", low_cpu_mem_usage=True, device_map="auto", trust_remote_code=True, offload_folder="offload")
 tokenizer = AutoTokenizer.from_pretrained("mattshumer/mistral-8x7b-chat")
 print ("Model loaded!")
 
