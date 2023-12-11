@@ -35,7 +35,6 @@ pipe = pipeline(
     "text-generation",
     model=model,
     tokenizer=tokenizer,
-    device=0,
     do_sample=False,
     max_new_tokens=256,
     no_repeat_ngram_size=2,
