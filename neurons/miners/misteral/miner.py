@@ -117,7 +117,6 @@ class MisteralMiner(Miner):
             "text-generation",
             model=self.model,
             tokenizer=self.tokenizer,
-            device=self.config.misteral.device,
             do_sample=self.config.misteral.do_sample,
             max_new_tokens=self.config.misteral.max_new_tokens,
             no_repeat_ngram_size=self.config.misteral.no_repeat_ngram_size,
