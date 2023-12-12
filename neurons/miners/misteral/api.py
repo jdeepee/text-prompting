@@ -204,7 +204,7 @@ class OpenAIMiner(Miner):
         #     n=self.config.openai.n,
         # )["choices"][0]["message"]["content"]
         resp = res.json()
-        bittensor.logging.debug(f"completion: {resp}")
+        bittensor.logging.debug(f"completion: {resp['output']['choices'][0]['text']}")
         synapse.completion = resp['output']['choices'][0]['text']
         return synapse
 
