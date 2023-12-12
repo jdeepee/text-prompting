@@ -20,6 +20,7 @@ import time
 import argparse
 import bittensor
 import requests
+import together
 from typing import List, Dict, Optional
 
 from prompting.baseminer.miner import Miner
@@ -178,20 +179,17 @@ class OpenAIMiner(Miner):
         # ]
         #bittensor.logging.debug(f"messages: {messages}")
 
-        res = requests.post("https://api.together.xyz/inference", data = {
-            "model": "DiscoResearch/DiscoLM-mixtral-8x7b-v2",
-            "max_tokens": self.config.openai.max_tokens,
-            "prompt": history,
-            "temperature": self.config.openai.temperature,
-            "top_p": self.config.openai.top_p,
-            "top_k": 50,
-            "repetition_penalty": 1,
-            "stream_tokens": False,
-            "stop": [
-                "<|im_end|>",
-                "<|im_start|>"
-            ]
-        }, headers={'Content-Type': 'application/json', "Authorization": "Bearer ${}".format(os.getenv("API_KEY"))})
+        output = together.Complete.create(
+            prompt = history, 
+            model = "DiscoResearch/DiscoLM-mixtral-8x7b-v2", 
+            max_tokens = self.config.openai.max_tokens,
+            temperature = self.config.openai.temperature,
+            top_k = 50,
+            top_p = self.config.openai.top_p,
+            repetition_penalty = 1,
+            stop = ["<|im_end|>", "<|im_start|>"]
+        )
+
 
         # resp = openai.ChatCompletion.create(
         #     model=self.config.openai.model_name,
@@ -203,8 +201,8 @@ class OpenAIMiner(Miner):
         #     presence_penalty=self.config.openai.presence_penalty,
         #     n=self.config.openai.n,
         # )["choices"][0]["message"]["content"]
-        # synapse.completion = resp
-        bittensor.logging.debug(f"completion: {res.text}")
+        synapse.completion = output['output']['choices'][0]['text']
+        bittensor.logging.debug(f"completion: {output['output']['choices'][0]['text']}")
         return synapse
 
 
@@ -223,6 +221,7 @@ if __name__ == "__main__":
         When executing the script, the miner runs indefinitely, periodically logging its status.
         To stop the miner, use a keyboard interrupt or ensure proper termination of the script.
     """
+    together.api_key = os.getenv("API_KEY")
 
     with OpenAIMiner():
         while True:
