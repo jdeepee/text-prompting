@@ -17,7 +17,6 @@
 # DEALINGS IN THE SOFTWARE.
 import os
 import time
-import openai
 import argparse
 import bittensor
 import requests
@@ -118,13 +117,6 @@ class OpenAIMiner(Miner):
 
     def __init__(self, api_key: Optional[str] = None, *args, **kwargs):
         super(OpenAIMiner, self).__init__(*args, **kwargs)
-        if api_key is None:
-            raise ValueError(
-                "OpenAI API key is None: the miner requires an `OPENAI_API_KEY` defined in the environment variables or as an direct argument into the constructor."
-            )
-        if self.config.wandb.on:
-            self.wandb_run.tags = self.wandb_run.tags + ("openai_miner",)
-        openai.api_key = api_key
 
     def _process_history(self, roles: List[str], messages: List[str]) -> str:
         """
@@ -226,9 +218,8 @@ if __name__ == "__main__":
         When executing the script, the miner runs indefinitely, periodically logging its status.
         To stop the miner, use a keyboard interrupt or ensure proper termination of the script.
     """
-    openai_api_key = os.getenv("OPENAI_API_KEY")
 
-    with OpenAIMiner(api_key=openai_api_key):
+    with OpenAIMiner():
         while True:
             print("running...", time.time())
             time.sleep(1)
