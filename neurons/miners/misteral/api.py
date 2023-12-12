@@ -186,7 +186,7 @@ class OpenAIMiner(Miner):
             "top_p": self.config.openai.top_p,
             "top_k": 50,
             "repetition_penalty": 1,
-            "stream_tokens": "true",
+            "stream_tokens": False,
             "stop": [
                 "<|im_end|>",
                 "<|im_start|>"
