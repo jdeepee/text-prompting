@@ -171,9 +171,7 @@ class MisteralMiner(Miner):
                 eos_token_id=self.pipe.tokenizer.eos_token_id,
                 pad_token_id=self.pipe.tokenizer.pad_token_id,
                 stopping_criteria=StoppingCriteriaList([self.stop]),
-            )[0]["generated_text"]
-            .split(":")[-1]
-            .replace(str(history), "")
+            )
         )
         bt.logging.debug("Completion: {}".format(completion))
         synapse.completion = completion
