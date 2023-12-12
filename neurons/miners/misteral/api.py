@@ -169,13 +169,18 @@ class OpenAIMiner(Miner):
             OpenAI-specific parameters (e.g., temperature, max_tokens) in the config to tailor the response
             generation process.
         """
-        history = self._process_history(roles=synapse.roles, messages=synapse.messages)
-        history += "<|im_start|>assistant\n"
-        bittensor.logging.debug("History: {}".format(history))
+        # history = self._process_history(roles=synapse.roles, messages=synapse.messages)
+        # history += "<|im_start|>assistant\n"
+        # bittensor.logging.debug("History: {}".format(history))
+        messages = [
+            {"role": role, "content": message}
+            for role, message in zip(synapse.roles, synapse.messages)
+        ]
+        bittensor.logging.debug(f"messages: {messages}")
 
         res = requests.post("https://api.together.xyz/inference", data = {
             "model": "DiscoResearch/DiscoLM-mixtral-8x7b-v2",
-            "max_tokens": self.config.openao.max_tokens,
+            "max_tokens": self.config.openai.max_tokens,
             "prompt": history,
             "temperature": self.config.openai.temperature,
             "top_p": self.config.openai.top_p,
