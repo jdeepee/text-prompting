@@ -95,8 +95,8 @@ class MisteralMiner(Miner):
         Initializes the MisteralMiner, loading the tokenizer and model.
         """
         super(MisteralMiner, self).__init__(*args, **kwargs)
-        self.tokenizer = AutoTokenizer.from_pretrained("mattshumer/mistral-8x7b-chat")
-        self.model = AutoModelForCausalLM.from_pretrained("mattshumer/mistral-8x7b-chat", low_cpu_mem_usage=True, device_map="auto", trust_remote_code=True)
+        self.tokenizer = AutoTokenizer.from_pretrained("Open-Orca/Mistral-7B-OpenOrca")
+        self.model = AutoModelForCausalLM.from_pretrained("Open-Orca/Mistral-7B-OpenOrca", low_cpu_mem_usage=True, device_map="auto", trust_remote_code=True)
         bt.logging.info("Model loaded!")
 
         self.stop_token_ids = self.tokenizer.convert_tokens_to_ids(["<|endoftext|>"])
