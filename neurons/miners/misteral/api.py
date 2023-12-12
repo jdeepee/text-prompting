@@ -177,7 +177,7 @@ class OpenAIMiner(Miner):
         #     for role, message in zip(synapse.roles, synapse.messages)
         # ]
         #bittensor.logging.debug(f"messages: {messages}")
-
+        together_api_key = os.getenv('API_KEY')
         res = requests.post("https://api.together.xyz/inference", json = {
             "model": "DiscoResearch/DiscoLM-mixtral-8x7b-v2",
             "max_tokens": self.config.openai.max_tokens,
@@ -191,7 +191,7 @@ class OpenAIMiner(Miner):
                 "<|im_end|>",
                 "<|im_start|>"
             ]
-        }, headers={'Content-Type': 'application/json', "Authorization": "Bearer ${}".format(os.getenv("API_KEY"))})
+        }, headers={'Content-Type': 'application/json', "Authorization": f'Bearer {together_api_key}'})
 
         # resp = openai.ChatCompletion.create(
         #     model=self.config.openai.model_name,
