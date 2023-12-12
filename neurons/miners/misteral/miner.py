@@ -95,7 +95,6 @@ class MisteralMiner(Miner):
         Initializes the MisteralMiner, loading the tokenizer and model.
         """
         super(MisteralMiner, self).__init__(*args, **kwargs)
-        bt.logging.info("Loading " + str(self.config.openorca.model_name))
         self.tokenizer = AutoTokenizer.from_pretrained("mattshumer/mistral-8x7b-chat")
         self.model = AutoModelForCausalLM.from_pretrained("mattshumer/mistral-8x7b-chat", low_cpu_mem_usage=True, device_map="auto", trust_remote_code=True)
         bt.logging.info("Model loaded!")
